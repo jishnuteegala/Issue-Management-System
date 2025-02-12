@@ -46,6 +46,24 @@ class IssueAPITest(APITestCase):
 
         # Verify that the response status code is 201 (Created)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # Verify that the new issue was created successfully
+        self.assertEqual(Issue.objects.count(), 2)
+        # Verify that the title of the new issue matches the expected title
+        self.assertEqual(Issue.objects.last().title, "New Issue")
+        # Verify that the description of the new issue matches the expected description
+        self.assertEqual(Issue.objects.last().description, "A new pothole needs fixing")
+        # Verify that the category of the new issue matches the expected category
+        self.assertEqual(Issue.objects.last().category, "pothole")
+        # Verify that the reported_by user id of the new issue matches the expected user id
+        self.assertEqual(Issue.objects.last().reported_by.id, self.user.id)
+        # Verify that the status of the new issue is 'open'
+        self.assertEqual(Issue.objects.last().status, "open")
+        # Verify that the allocated_to field of the new issue is null
+        self.assertIsNone(Issue.objects.last().allocated_to)
+        # Verify that the reported_at field of the new issue is not null
+        self.assertIsNotNone(Issue.objects.last().reported_at)
+        # Verify that the reported_by user id of the new issue matches the expected user id
+        self.assertEqual(Issue.objects.last().reported_by.id, self.user.id)
     
 
     def test_issue_retrieval(self):
@@ -61,3 +79,20 @@ class IssueAPITest(APITestCase):
 
         # Verify that the response status code is 200 (OK)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Verify that the retrieved issue title matches the expected title
+        self.assertEqual(response.data['title'], self.issue.title)
+        # Verify that the retrieved issue description matches the expected description
+        self.assertEqual(response.data['description'], self.issue.description)
+        # Verify that the retrieved issue category matches the expected category
+        self.assertEqual(response.data['category'], self.issue.category)
+        # Verify that the retrieved issue reported_by user id matches the expected user id
+        self.assertEqual(response.data['reported_by'], self.issue.reported_by.id)
+        # Verify that the retrieved issue status matches the expected status
+        self.assertEqual(response.data['status'], self.issue.status)
+        # Verify that the retrieved issue allocated_to field is null
+        self.assertIsNone(response.data['allocated_to'])
+        # Verify that the retrieved issue reported_at field is not null
+        self.assertIsNotNone(response.data['reported_at'])
+        # Verify that the retrieved issue id matches the expected issue id
+        self.assertEqual(response.data['id'], self.issue.id)
+        # Verify that the retrieved issue url matches the expected issue url

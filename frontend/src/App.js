@@ -3,23 +3,34 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
-  const [message, setMessage] = useState('');
+  const [issues, setIssues] = useState([]);
 
   useEffect(() => {
-    // Fetch the "Hello World" message from the Django backend
-    axios.get('http://localhost:8000/api/hello/')
+    // Fetch issues from the Django backend
+    axios.get('http://localhost:8000/api/issues/')
       .then(response => {
-        setMessage(response.data.message);
+        setIssues(response.data);
       })
       .catch(error => {
-        console.error('Error fetching message:', error);
+        console.error('Error fetching issues:', error);
       });
   }, []);
 
   return (
     <div className="App">
       <h1>Chalkstone Council Reporting</h1>
-      <p>{message || "Loading..."}</p>
+      <h2>Logged Issues</h2>
+      {issues.length === 0 ? (
+        <p>No issues logged yet.</p>
+      ) : (
+        <ul>
+          {issues.map(issue => (
+            <li key={issue.id}>
+              <strong>{issue.title}</strong> - {issue.status}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
