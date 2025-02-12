@@ -29,5 +29,6 @@ class Issue(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     allocated_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='allocated_issues')
     
+    # Define the string representation of the Issue model
     def __str__(self):
         return f"{self.title} ({self.get_status_display()})"
