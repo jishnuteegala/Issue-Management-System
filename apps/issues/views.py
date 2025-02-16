@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 from .models import Issue
 from .serializers import IssueSerializer
 
@@ -29,4 +30,9 @@ class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
         Method to perform the update operation when updating an issue
         '''
         # Set the updated_by field to the user who updated the issue
-        serializer.save(updated_by=self.request.user)
+        user = self.request.user
+        data = self.request.data
+        # Check if a non-staff user is trying to update sensitive fields.
+        if (('allocated_to' in data) or (data.get('status') == 'closed')) and not user.is_staff:
+            raise PermissionDenied("Only staff users can assign or close issues.")
+        serializer.save()

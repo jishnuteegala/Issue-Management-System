@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { getCSRFToken } from '../utils/csrf';
 
 export const fetchIssues = async () => {
     try {
@@ -21,8 +23,9 @@ export const fetchUsers = async () => {
     }
 };
 
-function Home({ users }) {
+function Home({ user }) {
     const [issues, setIssues] = useState([]);
+    const [users, setUsers] = useState([]);
     const [newIssue, setNewIssue] = useState({ title: '', description: '', category: 'pothole' });
 
     useEffect(() => {
@@ -31,15 +34,25 @@ function Home({ users }) {
             setIssues(issuesData);
         };
 
-        loadIssues()
-        fetchUsers();
+        const loadUsers = async () => {
+            const usersData = await fetchUsers();
+            setUsers(usersData);
+        };
+
+        loadIssues();
+        loadUsers();
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:8000/api/issues/', {
             ...newIssue,
-            reported_by: 1
+            reported_by: user.id
+        }, {
+            withCredentials: true,
+            headers: {
+                'X-CSRFToken': getCSRFToken()
+            }
         })
             .then(response => {
                 fetchIssues();
@@ -53,33 +66,37 @@ function Home({ users }) {
             <h1>Chalkstone Council Reporting</h1>
             <section>
                 <h2>Create New Issue</h2>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={newIssue.title}
-                        onChange={(e) => setNewIssue({ ...newIssue, title: e.target.value })}
-                        required
-                    />
-                    <textarea
-                        placeholder="Description"
-                        value={newIssue.description}
-                        onChange={(e) => setNewIssue({ ...newIssue, description: e.target.value })}
-                        required
-                    />
-                    <select
-                        value={newIssue.category}
-                        onChange={(e) => setNewIssue({ ...newIssue, category: e.target.value })}
-                    >
-                        <option value="pothole">Pothole</option>
-                        <option value="street_lighting">Street Lighting</option>
-                        <option value="graffiti">Graffiti</option>
-                        <option value="anti_social">Anti-Social Behaviour</option>
-                        <option value="fly_tipping">Fly-Tipping</option>
-                        <option value="blocked_drain">Blocked Drains</option>
-                    </select>
-                    <button type="submit">Submit Issue</button>
-                </form>
+                {user ? (
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Title"
+                            value={newIssue.title}
+                            onChange={(e) => setNewIssue({ ...newIssue, title: e.target.value })}
+                            required
+                        />
+                        <textarea
+                            placeholder="Description"
+                            value={newIssue.description}
+                            onChange={(e) => setNewIssue({ ...newIssue, description: e.target.value })}
+                            required
+                        />
+                        <select
+                            value={newIssue.category}
+                            onChange={(e) => setNewIssue({ ...newIssue, category: e.target.value })}
+                        >
+                            <option value="pothole">Pothole</option>
+                            <option value="street_lighting">Street Lighting</option>
+                            <option value="graffiti">Graffiti</option>
+                            <option value="anti_social">Anti-Social Behaviour</option>
+                            <option value="fly_tipping">Fly-Tipping</option>
+                            <option value="blocked_drain">Blocked Drains</option>
+                        </select>
+                        <button type="submit">Submit Issue</button>
+                    </form>
+                ) : (
+                    <p>Please log in to create a new issue.</p>
+                )}
             </section>
             <section>
                 <h2>Logged Issues</h2>
@@ -89,7 +106,9 @@ function Home({ users }) {
                     <ul>
                         {issues.map(issue => (
                             <li key={issue.id}>
-                                <strong>{issue.title}</strong> - {issue.status}
+                                <Link to={`/issues/${issue.id}`}>
+                                    <strong>{issue.title}</strong> - {issue.status}
+                                </Link>
                             </li>
                         ))}
                     </ul>

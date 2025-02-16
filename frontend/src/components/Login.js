@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getCSRFToken } from '../utils/csrf';
 
 function Login({ setUser }) {
   const [form, setForm] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
+  const [debugInfo, setDebugInfo] = useState(null); // State to hold debug information
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/users/login/', form, { withCredentials: true })
-      .then(response => {
-        setUser(response.data.user);
-        navigate('/');
-      })
-      .catch(error => {
-        setMessage('Login failed. Please check your credentials.');
-        console.error(error);
-      });
+    axios.post('http://localhost:8000/api/users/login/', {
+        username: form.username,
+        password: form.password
+    }, {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': getCSRFToken()
+        }
+    })
+        .then(response => {
+            setUser(response.data.user);
+            navigate('/');
+        })
+        .catch(error => {
+            console.error('Login error:', error);
+            setMessage('Login failed. Please check your credentials and try again.');
+        });
   };
 
   return (
@@ -33,6 +43,12 @@ function Login({ setUser }) {
         <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
         <button type="submit">Login</button>
       </form>
+      {/* Debugging display: show full response or error object */}
+      {debugInfo && (
+        <pre style={{ fontSize: '0.8em', color: 'grey' }}>
+          {JSON.stringify(debugInfo, null, 2)}
+        </pre>
+      )}
     </div>
   );
 }
