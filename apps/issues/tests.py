@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from .models import Issue
+from django.db import connection
 
 class IssueAPITest(APITestCase):
     '''
@@ -12,6 +13,8 @@ class IssueAPITest(APITestCase):
         '''
         Method to set up the test case
         '''
+        # Check if the test database exists and handle it
+        # self.check_test_database()
 
         # Create a new user for the test case
         self.user = User.objects.create_user(username='testuser', password='password')
@@ -24,6 +27,18 @@ class IssueAPITest(APITestCase):
             category="pothole",
             reported_by=self.user,
         )
+    
+    # def check_test_database(self):
+    #     '''
+    #     Method to check if the test database exists and handle it
+    #     '''
+    #     test_db_name = connection.settings_dict['TEST']['NAME']
+    #     with connection.cursor() as cursor:
+    #         cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{test_db_name}'")
+    #         exists = cursor.fetchone()
+    #         if exists:
+    #             cursor.execute(f"DROP DATABASE {test_db_name}")
+    #             connection.creation.create_test_db()
     
     def test_issue_creation(self):
         '''

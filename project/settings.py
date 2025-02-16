@@ -66,6 +66,10 @@ DATABASES = {
         'PASSWORD': 'appuser',
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_chalkstone_db',
+            'DEPENDENCIES': [],
+        },
     }
 }
 
