@@ -23,3 +23,10 @@ class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     # Initialize the IssueSerializer class to serialize the Issue model
     serializer_class = IssueSerializer
+
+    def perform_update(self, serializer):
+        '''
+        Method to perform the update operation when updating an issue
+        '''
+        # Set the updated_by field to the user who updated the issue
+        serializer.save(updated_by=self.request.user)

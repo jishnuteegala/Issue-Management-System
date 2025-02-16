@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './App.css';
+import NavBar from './components/NavBar';
+import Login from './components/Login';
+import Register from './components/Register';
+import Home, { fetchIssues, fetchUsers } from './components/Home';
 
 function App() {
-  const [issues, setIssues] = useState([]);
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch issues from the Django backend
-    axios.get('http://localhost:8000/api/issues/')
-      .then(response => {
-        setIssues(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching issues:', error);
-      });
+    fetchIssues();
+    fetchUsers();
   }, []);
+  
+  const handleLogout = () => {
+    axios.post('http://localhost:8000/api/users/logout/', {}, { withCredentials: true })
+      .then(response => {
+        setUsers(null);
+        navigate('/');
+      })
+      .catch(error => console.error('Logout error:', error));
+  };
 
   return (
-    <div className="App">
-      <h1>Chalkstone Council Reporting</h1>
-      <h2>Logged Issues</h2>
-      {issues.length === 0 ? (
-        <p>No issues logged yet.</p>
-      ) : (
-        <ul>
-          {issues.map(issue => (
-            <li key={issue.id}>
-              <strong>{issue.title}</strong> - {issue.status}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <NavBar users={users} onLogout={handleLogout} />
+      <Routes>
+        <Route path="/" element={<Home users={users} />} />
+        <Route path="/login" element={<Login setUsers={setUsers} />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
