@@ -16,22 +16,25 @@ function Login({ setUser }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8000/api/users/login/', {
-        username: form.username,
-        password: form.password
+      username: form.username,
+      password: form.password
     }, {
-        withCredentials: true,
-        headers: {
-          'X-CSRFToken': getCSRFToken()
-        }
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': getCSRFToken()
+      }
     })
-        .then(response => {
-            setUser(response.data.user);
-            navigate('/');
-        })
-        .catch(error => {
-            console.error('Login error:', error);
-            setMessage('Login failed. Please check your credentials and try again.');
-        });
+      .then(response => {
+        const userData = response.data.user;
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData)); // Store user data in local storage
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Login error:', error);
+        setMessage('Login failed. Please check your credentials and try again.');
+        setDebugInfo(error.response ? error.response.data : error.message); // Set debug information
+      });
   };
 
   return (

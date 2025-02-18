@@ -62,9 +62,9 @@ function Home({ user }) {
     };
 
     return (
-        <div>
+        <div className='container'>
             <h1>Chalkstone Council Reporting</h1>
-            <section>
+            <section className='create-issue'>
                 <h2>Create New Issue</h2>
                 {user ? (
                     <form onSubmit={handleSubmit}>
@@ -98,23 +98,23 @@ function Home({ user }) {
                     <p>Please log in to create a new issue.</p>
                 )}
             </section>
-            <section>
+            <section className='logged-issues'>
                 <h2>Logged Issues</h2>
                 {issues.length === 0 ? (
                     <p>No issues logged yet.</p>
                 ) : (
-                    <ul>
+                    <ul className='issue-list'>
                         {issues.map(issue => (
                             <li key={issue.id}>
                                 <Link to={`/issues/${issue.id}`}>
-                                    <strong>{issue.title}</strong> - {issue.status}
+                                    <strong className='issue-title'>{issue.title}</strong> - {issue.status}
                                 </Link>
                             </li>
                         ))}
                     </ul>
                 )}
             </section>
-            <section>
+            <section className='user-list'>
                 <h2>User List</h2>
                 {users.length === 0 ? (
                     <p>No users found.</p>
