@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Register.css';
 
 function Register() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
@@ -8,7 +9,7 @@ function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -25,7 +26,7 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>

@@ -7,7 +7,7 @@ function NavBar({ user, onLogout }) {
     <nav className="navbar">
       <div>
         <Link to="/">Home</Link>
-        {user && user.is_staff && <Link to="/staff">Staff</Link>}
+        {/* {user && user.is_staff && <Link to="/staff">Staff</Link>} */}
       </div>
       <div>
         {user ? (
@@ -15,7 +15,9 @@ function NavBar({ user, onLogout }) {
             <span>Welcome, {user.username}!</span>
             <button onClick={onLogout}>Logout</button>
             {/* Debugging display: show full user object */}
-            {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
+            {/* <pre style={{ fontSize: '0.8em', color: 'grey' }}>
+            {JSON.stringify(user, null, 2)}
+            </pre> */}
           </>
         ) : (
           <>

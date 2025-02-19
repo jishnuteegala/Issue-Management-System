@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCSRFToken } from '../utils/csrf';
+import './Login.css';
 
 function Login({ setUser }) {
   const [form, setForm] = useState({ username: '', password: '' });
@@ -38,7 +39,7 @@ function Login({ setUser }) {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>

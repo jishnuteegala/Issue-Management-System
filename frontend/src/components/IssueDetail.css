@@ -72,7 +72,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Add gap between form elements */
 }
 
 .issue-form-section form div {

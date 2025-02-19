@@ -42,3 +42,18 @@ This project is a reporting and analysis platform for Chalkstone Council. It all
      ```bash
      npm start
      ```
+
+   - **Production Build:**
+     - Build the production version of the frontend:
+       ```bash
+       npm run build
+       ```
+     - Serve the production build locally:
+       ```bash
+       npm install -g serve
+       serve -s build
+       ```
+     - By default, the production build will be served on port 3000. You can access it at `http://localhost:3000`. To specify a different port, use the `-l` option:
+       ```bash
+       serve -s build -l 5000
+       ```

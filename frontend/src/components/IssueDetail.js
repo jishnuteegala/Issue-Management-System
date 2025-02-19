@@ -1,52 +1,40 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useQueryClient } from 'react-query';
 import { getCSRFToken } from '../utils/csrf';
 import './IssueDetail.css';
 
 const fetchIssueDetails = async (id) => {
-  try {
-    const response = await axios.get(`http://localhost:8000/api/issues/${id}/`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching issue details:', error);
-    return null;
-  }
+  const response = await axios.get(`http://localhost:8000/api/issues/${id}/`);
+  return response.data;
 };
 
 const fetchStaffUsers = async () => {
-  try {
-    const response = await axios.get('http://localhost:8000/api/users/');
-    return response.data.filter(u => u.is_staff);
-  } catch (error) {
-    console.error('Error fetching staff users:', error);
-    return [];
-  }
+  const response = await axios.get('http://localhost:8000/api/users/');
+  return response.data.filter(u => u.is_staff);
 };
 
 function IssueDetail({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [issue, setIssue] = useState(null);
-  const [staffList, setStaffList] = useState([]);
+  const queryClient = useQueryClient();
   const [updateData, setUpdateData] = useState({ allocated_to: '', status: '' });
   const [message, setMessage] = useState('');
   const [debugInfo, setDebugInfo] = useState(null); // State to hold debug information
 
-  useEffect(() => {
-    loadIssueDetails();
-  }, [id]);
+  const { data: issue, isLoading: isIssueLoading } = useQuery(['issue', id], () => fetchIssueDetails(id));
+  const { data: staffList = [], isLoading: isStaffLoading } = useQuery('staffUsers', fetchStaffUsers);
 
-  const loadIssueDetails = useCallback(async () => {
-    const [issueData, staffData] = await Promise.all([fetchIssueDetails(id), fetchStaffUsers()]);
-    setIssue(issueData);
-    setStaffList(staffData);
-    setUpdateData({
-      allocated_to: issueData?.allocated_to || '',
-      status: issueData?.status || ''
-    });
-    setDebugInfo(issueData); // Set debug information
-  }, [id]);
+  useEffect(() => {
+    if (issue) {
+      setUpdateData({
+        allocated_to: issue.allocated_to || '',
+        status: issue.status || ''
+      });
+      setDebugInfo(issue); // Set debug information
+    }
+  }, [issue]);
 
   const handleChange = (e) => {
     setUpdateData({ ...updateData, [e.target.name]: e.target.value });
@@ -62,7 +50,7 @@ function IssueDetail({ user }) {
     })
       .then(response => {
         setMessage('Issue updated successfully.');
-        setIssue(response.data);
+        queryClient.invalidateQueries(['issue', id]); // Invalidate the cache to refetch the issue details
         setDebugInfo(response.data); // Set debug information
       })
       .catch(error => {
@@ -72,7 +60,7 @@ function IssueDetail({ user }) {
       });
   };
 
-  if (!issue) return <div>Loading issue...</div>;
+  if (isIssueLoading || isStaffLoading) return <div>Loading issue...</div>;
 
   return (
     <div className="issue-detail-container">
@@ -85,10 +73,6 @@ function IssueDetail({ user }) {
             <h2>Issue Detail: {issue.title}</h2>
           </div>
           <div className="issue-description" dangerouslySetInnerHTML={{ __html: issue.description.replace(/\n/g, '<br />') }} />
-          <div className="issue-meta">
-            <p>Status: {issue.status}</p>
-            <p>Reported by: {issue.reported_by}</p>
-          </div>
         </div>
         {user && user.is_staff && (
           <aside className="right-sidebar">
@@ -119,11 +103,11 @@ function IssueDetail({ user }) {
       </div>
       {message && <p className="message">{message}</p>}
       {/* Debugging display: show full response or error object */}
-      {debugInfo && (
-        <pre>
+      {/* {debugInfo && (
+        <pre style={{ fontSize: '0.8em', color: 'grey' }}>
           {JSON.stringify(debugInfo, null, 2)}
         </pre>
-      )}
+      )} */}
     </div>
   );
 }
