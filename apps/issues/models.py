@@ -26,6 +26,7 @@ class Issue(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     reported_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_issues')
     reported_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     allocated_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='allocated_issues')
     

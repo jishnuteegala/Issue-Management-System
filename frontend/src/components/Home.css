@@ -1,0 +1,205 @@
+/* Container for the Home page view */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(27, 31, 35, 0.12);
+    padding: 20px;
+    padding-left: 40px;
+    /* Add padding to the left */
+    padding-right: 40px;
+    /* Add padding to the right */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center the contents */
+}
+
+/* Header area with Search and Filter Controls */
+.issue-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e4e8;
+    width: 100%;
+    /* Ensure it takes full width */
+}
+
+.issue-list-header .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.issue-list-header .controls input[type="text"],
+.issue-list-header .controls select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.issue-list-header .new-issue-button {
+    background-color: #0366d6;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.issue-list-header .new-issue-button:hover {
+    background-color: #0356b6;
+}
+
+/* Create Issue Form */
+.create-issue {
+    width: 100%;
+    /* Ensure it takes full width */
+    margin-bottom: 20px;
+    /* Add gap between the form and the issue list header */
+}
+
+.create-issue form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Add gap between form elements */
+}
+
+.create-issue form input,
+.create-issue form textarea,
+.create-issue form select,
+.create-issue form button {
+    padding: 8px 12px;
+    border: 1px solid #d1d5da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.create-issue form textarea {
+    resize: vertical;
+    /* Allow vertical resizing */
+}
+
+.create-issue form button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.create-issue form button:hover {
+    background-color: #218838;
+}
+
+/* Issues List */
+.issue-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* Ensure it takes full width */
+}
+
+.issue-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.issue-item:last-child {
+    border-bottom: none;
+}
+
+/* Issue Item Components */
+.issue-item .issue-checkbox {
+    margin-right: 12px;
+}
+
+.issue-item .issue-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.issue-item .issue-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #24292e;
+    text-decoration: none;
+    margin-bottom: 4px;
+}
+
+.issue-item .issue-meta {
+    font-size: 12px;
+    color: #586069;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Styling for the issue state badge */
+.issue-state {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.issue-state.open {
+    background-color: #28a745;
+}
+
+.issue-state.closed {
+    background-color: #d73a49;
+}
+
+/* Bulk Actions area */
+.bulk-actions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bulk-actions select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Pagination Controls */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 8px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #e1e4e8;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #24292e;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background-color: #0366d6;
+    color: #fff;
+    border-color: #0366d6;
+}

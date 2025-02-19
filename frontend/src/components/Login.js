@@ -47,11 +47,11 @@ function Login({ setUser }) {
         <button type="submit">Login</button>
       </form>
       {/* Debugging display: show full response or error object */}
-      {debugInfo && (
+      {/* {debugInfo && (
         <pre style={{ fontSize: '0.8em', color: 'grey' }}>
           {JSON.stringify(debugInfo, null, 2)}
         </pre>
-      )}
+      )} */}
     </div>
   );
 }
