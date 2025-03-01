@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from .models import Issue
 from .serializers import IssueSerializer
 
@@ -17,9 +17,9 @@ class IssueListCreateView(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
 
     # Cache the view for 15 minutes
-    @method_decorator(cache_page(60*15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60*15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
 class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
     '''
@@ -33,9 +33,9 @@ class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = IssueSerializer
 
     # Cache the view for 15 minutes
-    @method_decorator(cache_page(60*15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60*15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def perform_update(self, serializer):
         '''

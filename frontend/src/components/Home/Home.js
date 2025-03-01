@@ -20,9 +20,19 @@ function Home({ user }) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedIssues, setSelectedIssues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [debugInfo, setDebugInfo] = useState(null); // State to hold debug information
   const issuesPerPage = 5;
 
-  const { data: issues = [], isLoading } = useQuery('issues', fetchIssues);
+  const { data: issues = [], isLoading } = useQuery('issues', fetchIssues, {
+    cacheTime: 0,
+    staleTime: 0,
+    onSuccess: (data) => {
+      setDebugInfo(data); // Set debug information on successful fetch
+    },
+    onError: (error) => {
+      setDebugInfo(error.response ? error.response.data : error.message); // Set debug information on error
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,8 +55,12 @@ function Home({ user }) {
       .then((response) => {
         queryClient.invalidateQueries('issues'); // Invalidate the cache to refetch the issues
         setNewIssue({ title: '', description: '', category: 'pothole' });
+        setDebugInfo(response.data); // Set debug information on successful creation
       })
-      .catch((error) => console.error('Error creating issue:', error));
+      .catch((error) => {
+        console.error('Error creating issue:', error);
+        setDebugInfo(error.response ? error.response.data : error.message); // Set debug information on error
+      });
   };
 
   const handleBulkAction = (action) => {
@@ -63,8 +77,13 @@ function Home({ user }) {
               },
             }
           )
-          .then(() => queryClient.invalidateQueries('issues')) // Invalidate the cache to refetch the issues
-          .catch((error) => console.error('Bulk action error:', error));
+          .then(() => {
+            queryClient.invalidateQueries('issues'); // Invalidate the cache to refetch the issues
+          })
+          .catch((error) => {
+            console.error('Bulk action error:', error);
+            setDebugInfo(error.response ? error.response.data : error.message); // Set debug information on error
+          });
       });
       setSelectedIssues([]);
     } else {
@@ -265,6 +284,12 @@ function Home({ user }) {
           </a>
         ))}
       </section>
+      {/* Debugging display: show full response or error object */}
+      {debugInfo && (
+        <pre style={{ fontSize: '0.8em', color: 'grey' }}>
+          {JSON.stringify(debugInfo, null, 2)}
+        </pre>
+      )}
     </div>
   );
 }
