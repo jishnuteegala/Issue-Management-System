@@ -6,6 +6,7 @@ import { getCSRFToken } from '../../utils/csrf';
 import { getCategoryOptions, getCategoryDisplayName } from '../../utils/categoryUtils';
 import './Home.css';
 import debounce from 'lodash.debounce';
+import DOMPurify from 'dompurify';
 
 const fetchIssues = async () => {
   const response = await axios.get('http://localhost:8000/api/issues/');
@@ -25,11 +26,13 @@ function Home({ user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const sanitizedDescription = DOMPurify.sanitize(newIssue.description);
     axios
       .post(
         'http://localhost:8000/api/issues/',
         {
           ...newIssue,
+          description: sanitizedDescription,
           reported_by: user.id,
         },
         {
