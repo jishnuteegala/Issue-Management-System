@@ -3,7 +3,6 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from .models import Issue
-from django.db import connection
 
 class IssueAPITest(APITestCase):
     '''
@@ -13,9 +12,6 @@ class IssueAPITest(APITestCase):
         '''
         Method to set up the test case
         '''
-        # Check if the test database exists and handle it
-        # self.check_test_database()
-
         # Create a new user for the test case
         self.user = User.objects.create_user(username='testuser', password='password')
         # Log in the user
@@ -27,24 +23,11 @@ class IssueAPITest(APITestCase):
             category="pothole",
             reported_by=self.user,
         )
-    
-    # def check_test_database(self):
-    #     '''
-    #     Method to check if the test database exists and handle it
-    #     '''
-    #     test_db_name = connection.settings_dict['TEST']['NAME']
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{test_db_name}'")
-    #         exists = cursor.fetchone()
-    #         if exists:
-    #             cursor.execute(f"DROP DATABASE {test_db_name}")
-    #             connection.creation.create_test_db()
-    
+
     def test_issue_creation(self):
         '''
         Test to verify that a new issue can be created using the API
         '''
-
         # Define the URL for the issue list endpoint
         url = reverse('issue-list-create')
 
@@ -79,13 +62,11 @@ class IssueAPITest(APITestCase):
         self.assertIsNotNone(Issue.objects.last().reported_at)
         # Verify that the reported_by user id of the new issue matches the expected user id
         self.assertEqual(Issue.objects.last().reported_by.id, self.user.id)
-    
 
     def test_issue_retrieval(self):
         '''
         Test to verify that an existing issue can be retrieved
         '''
-
         # Define the URL for the issue detail endpoint
         url = reverse('issue-detail', args=[self.issue.id])
 
@@ -110,4 +91,50 @@ class IssueAPITest(APITestCase):
         self.assertIsNotNone(response.data['reported_at'])
         # Verify that the retrieved issue id matches the expected issue id
         self.assertEqual(response.data['id'], self.issue.id)
-        # Verify that the retrieved issue url matches the expected issue url
+
+    def test_issue_update(self):
+        '''
+        Test to verify that an existing issue can be updated
+        '''
+        # Define the URL for the issue detail endpoint
+        url = reverse('issue-detail', args=[self.issue.id])
+
+        # Define the data to be sent in the PATCH request to update the issue
+        data = {
+            "title": "Updated Issue",
+            "description": "Updated description",
+            "category": "graffiti",
+            "status": "allocated"
+        }
+
+        # Send a PATCH request to update the issue
+        response = self.client.patch(url, data, format='json')
+
+        # Print the response data for debugging
+        #print(response.data)
+
+        # Verify that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Verify that the updated issue title matches the expected title
+        self.assertEqual(response.data['title'], "Updated Issue")
+        # Verify that the updated issue description matches the expected description
+        self.assertEqual(response.data['description'], "Updated description")
+        # Verify that the updated issue category matches the expected category
+        self.assertEqual(response.data['category'], "graffiti")
+        # Verify that the updated issue status matches the expected status
+        self.assertEqual(response.data['status'], "allocated")
+
+    def test_issue_deletion(self):
+        '''
+        Test to verify that an existing issue can be deleted
+        '''
+        # Define the URL for the issue detail endpoint
+        url = reverse('issue-detail', args=[self.issue.id])
+
+        # Send a DELETE request to delete the issue
+        response = self.client.delete(url)
+
+        # Verify that the response status code is 204 (No Content)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        # Verify that the issue was deleted successfully
+        self.assertEqual(Issue.objects.count(), 0)

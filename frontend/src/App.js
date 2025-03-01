@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import NavBar from './components/NavBar';
-import Login from './components/Login';
-import Register from './components/Register';
+import NavBar from './components/NavBar/NavBar';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 import Home from './components/Home/Home';
 import IssueDetail from './components/IssueDetail/IssueDetail';
 import { getCSRFToken } from './utils/csrf';
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -38,7 +39,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="App">
       {/* Navigation bar displays current user info and logout button */}
       <NavBar user={user} onLogout={handleLogout} />
       <Routes>
