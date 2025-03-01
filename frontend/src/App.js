@@ -4,8 +4,8 @@ import axios from 'axios';
 import NavBar from './components/NavBar';
 import Login from './components/Login';
 import Register from './components/Register';
-import Home from './components/Home';
-import IssueDetail from './components/IssueDetail';
+import Home from './components/Home/Home';
+import IssueDetail from './components/IssueDetail/IssueDetail';
 import { getCSRFToken } from './utils/csrf';
 
 function App() {

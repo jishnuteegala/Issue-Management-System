@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
-import { getCSRFToken } from '../utils/csrf';
+import { getCSRFToken } from '../../utils/csrf';
 import './IssueDetail.css';
 
 const fetchIssueDetails = async (id) => {

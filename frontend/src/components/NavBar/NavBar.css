@@ -1,0 +1,52 @@
+@import '../../variables.css';
+
+/* Navigation Bar Container */
+.navbar {
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Navigation Links */
+.navbar a {
+    margin-right: var(--spacing-medium);
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: var(--primary-color);
+}
+
+/* User Greeting */
+.navbar span {
+    margin-right: var(--spacing-medium);
+    font-weight: 600;
+    color: var(--text-muted-color);
+}
+
+/* Logout Button */
+.navbar button {
+    background-color: var(--danger-color);
+    border: none;
+    color: #fff;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-small);
+}
+
+.navbar button:hover {
+    background-color: var(--danger-color-hover);
+}
+
+/* Debugging Display */
+.navbar pre {
+    font-size: 0.8em;
+    color: var(--text-muted-color);
+    margin-top: var(--spacing-medium);
+}

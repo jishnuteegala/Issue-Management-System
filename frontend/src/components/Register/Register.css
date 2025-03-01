@@ -1,0 +1,70 @@
+@import '../../variables.css';
+
+/* Container for the Register page view */
+.register-container {
+    max-width: 600px;
+    margin: var(--spacing-large) auto;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(27, 31, 35, 0.12);
+    padding: var(--spacing-large);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Header for the Register page */
+.register-container h2 {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-large);
+}
+
+/* Form styling */
+.register-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    box-sizing: border-box;
+}
+
+.register-container form input {
+    padding: var(--spacing-small) var(--spacing-medium);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-small);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.register-container form input:focus {
+    border-color: var(--primary-color-hover);
+    outline: none;
+}
+
+.register-container form button {
+    padding: var(--spacing-small) var(--spacing-medium);
+    background-color: var(--secondary-color);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-small);
+    box-sizing: border-box;
+}
+
+.register-container form button:hover {
+    background-color: var(--secondary-color-hover);
+}
+
+/* Message display */
+.register-container p {
+    font-size: var(--font-size-small);
+    color: var(--danger-color);
+    margin-top: var(--spacing-medium);
+}

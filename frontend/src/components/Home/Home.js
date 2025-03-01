@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
-import { getCSRFToken } from '../utils/csrf';
-import { getCategoryOptions, getCategoryDisplayName } from '../utils/categoryUtils';
+import { getCSRFToken } from '../../utils/csrf';
+import { getCategoryOptions, getCategoryDisplayName } from '../../utils/categoryUtils';
 import './Home.css';
 import debounce from 'lodash.debounce';
 

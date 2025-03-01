@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getCSRFToken } from '../utils/csrf';
+import { getCSRFToken } from '../../utils/csrf';
 import './Login.css';
 
 function Login({ setUser }) {
