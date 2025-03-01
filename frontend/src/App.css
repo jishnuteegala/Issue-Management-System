@@ -15,9 +15,16 @@ nav {
   border-bottom: 1px solid var(--border-color);
   padding: var(--spacing-small) var(--spacing-medium);
   display: flex;
+  justify-content: center;
+  /* Center the inner container */
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-large);
 }
 
 nav a {
@@ -158,7 +165,7 @@ form button:hover {
 }
 
 .issue-detail form div {
-  margin-bottom: var(--spacing-medium);
+  margin-bottom: var (--spacing-medium);
 }
 
 .issue-detail form label {

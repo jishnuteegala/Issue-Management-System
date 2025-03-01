@@ -39,16 +39,18 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <>
       {/* Navigation bar displays current user info and logout button */}
       <NavBar user={user} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/issues/:id" element={<IssueDetail user={user} />} />
-      </Routes>
-    </div>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home user={user} />} />
+          <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/issues/:id" element={<IssueDetail user={user} />} />
+        </Routes>
+      </div>
+    </>
   );
 }
 
