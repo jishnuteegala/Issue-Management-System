@@ -1,0 +1,53 @@
+.dashboard-container {
+    padding: var(--spacing-large);
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-medium);
+    margin-bottom: var(--spacing-large);
+}
+
+.metric-card {
+    padding: var(--spacing-medium);
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.metric-card h3 {
+    margin: 0;
+    font-size: var(--font-size-small);
+    color: var(--text-muted-color);
+}
+
+.metric-card p {
+    margin: var(--spacing-small) 0 0;
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-large);
+    margin-top: var(--spacing-large);
+}
+
+.chart-container {
+    padding: var(--spacing-medium);
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.chart-container h3 {
+    margin: 0 0 var(--spacing-medium);
+    font-size: var(--font-size-medium);
+    color: var(--text-color);
+}

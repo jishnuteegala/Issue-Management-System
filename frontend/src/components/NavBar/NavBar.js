@@ -8,6 +8,7 @@ function NavBar({ user, onLogout }) {
       <div className="navbar-inner">
         <div>
           <Link to="/">Home</Link>
+          {user?.is_staff && <Link to="/dashboard">Dashboard</Link>}
           {/* {user && user.is_staff && <Link to="/staff">Staff</Link>} */}
         </div>
         <div>

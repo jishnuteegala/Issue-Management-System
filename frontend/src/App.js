@@ -6,6 +6,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Home from './components/Home/Home';
 import IssueDetail from './components/IssueDetail/IssueDetail';
+import Dashboard from './components/Dashboard/Dashboard';
 import { getCSRFToken } from './utils/csrf';
 import './App.css';
 
@@ -48,6 +49,16 @@ function App() {
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/issues/:id" element={<IssueDetail user={user} />} />
+          <Route
+            path="/dashboard"
+            element={
+              user?.is_staff ? (
+                <Dashboard />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
         </Routes>
       </div>
     </>
