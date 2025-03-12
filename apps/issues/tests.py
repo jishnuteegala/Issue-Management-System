@@ -138,3 +138,33 @@ class IssueAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         # Verify that the issue was deleted successfully
         self.assertEqual(Issue.objects.count(), 0)
+
+    def test_issue_string_representation(self):
+        '''
+        Test the string representation of an Issue
+        '''
+        issue = Issue.objects.create(
+            title="Test Issue",
+            description="Test description",
+            category="pothole",
+            reported_by=self.user,
+            status="open"
+        )
+        expected_string = f"Test Issue (Open)"
+        self.assertEqual(str(issue), expected_string)
+
+    def test_non_staff_update_restricted_fields(self):
+        '''
+        Test that non-staff users cannot update restricted fields
+        '''
+        url = reverse('issue-detail', args=[self.issue.id])
+        
+        # Try to update status to closed
+        data = {"status": "closed"}
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Try to assign to staff user
+        data = {"allocated_to": self.user.id}
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

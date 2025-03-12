@@ -96,3 +96,28 @@ class UserAPITest(APITestCase):
         self.assertEqual(response.data[0]['username'], 'testuser')
         # Verify that the email of the first user matches the expected email
         self.assertEqual(response.data[0]['email'], '')
+
+    def test_user_profile_string_representation(self):
+        '''
+        Test the string representation of a UserProfile
+        '''
+        from apps.users.models import UserProfile
+        
+        profile = UserProfile.objects.create(
+            user=self.user,
+            phone_number="1234567890",
+            address="Test Address"
+        )
+        self.assertEqual(str(profile), self.user.username)
+
+    def test_login_with_invalid_credentials(self):
+        '''
+        Test login attempt with invalid credentials
+        '''
+        url = reverse('user-login')
+        data = {
+            "username": "nonexistent",
+            "password": "wrongpassword"
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
