@@ -25,6 +25,7 @@ function NavBar({ user, onLogout }) {
             <>
               <span>User is not logged in</span>
               <Link to="/login">Login</Link>
+              <Link to="/staff">Staff Login</Link>
               <Link to="/register">Register</Link>
             </>
           )}

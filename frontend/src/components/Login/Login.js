@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCSRFToken } from '../../utils/csrf';
 import './Login.css';
 
-function Login({ setUser }) {
+function Login({ setUser, isStaffLogin }) {
   const [form, setForm] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
   const [debugInfo, setDebugInfo] = useState(null); // State to hold debug information
@@ -27,6 +27,11 @@ function Login({ setUser }) {
     })
       .then(response => {
         const userData = response.data.user;
+        // Check if this is a staff login and the user is actually staff
+        if (isStaffLogin && !userData.is_staff) {
+          setMessage('Access denied. Staff access only.');
+          return;
+        }
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData)); // Store user data in local storage
         navigate('/');
@@ -40,7 +45,7 @@ function Login({ setUser }) {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
+      <h2>{isStaffLogin ? 'Staff Login' : 'Login'}</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <input name="username" placeholder="Username" value={form.username} onChange={handleChange} required />

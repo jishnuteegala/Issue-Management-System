@@ -1,0 +1,10 @@
+.staff-login-container {
+    max-width: 600px;
+    margin: var(--spacing-large) auto;
+    text-align: center;
+}
+
+.staff-login-container h1 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-large);
+}

@@ -7,6 +7,7 @@ import Register from './components/Register/Register';
 import Home from './components/Home/Home';
 import IssueDetail from './components/IssueDetail/IssueDetail';
 import Dashboard from './components/Dashboard/Dashboard';
+import StaffLogin from './components/StaffLogin/StaffLogin';
 import { getCSRFToken } from './utils/csrf';
 import './App.css';
 
@@ -59,6 +60,7 @@ function App() {
               )
             }
           />
+          <Route path="/staff" element={user ? <Navigate to="/" /> : <StaffLogin setUser={setUser} />} />
         </Routes>
       </div>
     </>
