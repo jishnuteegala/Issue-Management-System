@@ -1,0 +1,44 @@
+@startuml Class Diagram
+
+skinparam classAttributeIconSize 0
+
+class User {
+  +username: String
+  +email: String
+  +is_staff: Boolean
+  +register()
+  +login()
+  +logout()
+}
+
+class Issue {
+  +title: String
+  +description: String
+  +category: String
+  +status: String
+  +reported_at: DateTime
+  +updated_at: DateTime
+  +reported_by: User
+  +allocated_to: Staff
+  +create()
+  +update()
+  +close()
+}
+
+class Staff {
+  +department: String
+  +allocateIssue()
+  +resolveIssue()
+}
+
+class Category {
+  +name: String
+  +description: String
+}
+
+User <|-- Staff
+Issue "*" -- "1" User : reported by >
+Issue "*" -- "0..1" Staff : allocated to >
+Issue "*" -- "1" Category : belongs to >
+
+@enduml

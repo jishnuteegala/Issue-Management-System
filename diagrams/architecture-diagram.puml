@@ -1,0 +1,31 @@
+@startuml Architecture Diagram
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+
+package "Presentation Layer" {
+  [React SPA] as UI
+  [React Components] as Components
+  [React Query] as StateManagement
+  UI --> Components
+  UI --> StateManagement
+}
+
+package "Application Layer" {
+  [Django REST Framework] as API
+  [Authentication] as Auth
+  [Business Logic] as Logic
+  API --> Auth
+  API --> Logic
+}
+
+package "Data Layer" {
+  [Django ORM] as ORM
+  database "PostgreSQL" as DB
+  ORM --> DB
+}
+
+UI <--> API : HTTP/JSON
+API <--> ORM : Python Objects
+
+@enduml

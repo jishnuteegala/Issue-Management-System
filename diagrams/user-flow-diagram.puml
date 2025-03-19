@@ -1,0 +1,39 @@
+@startuml User Flow Diagram
+
+skinparam activityDiamondBackgroundColor white
+skinparam activityBackgroundColor white
+skinparam activityBorderColor black
+
+start
+:User visits homepage;
+if (User authenticated?) then (yes)
+  if (User is staff?) then (yes)
+    :Display dashboard;
+    :Show staff dashboard;
+    :View issue analytics;
+    :Manage reported issues;
+  else (no)
+    :Browse reported issues;
+    if (Want to report issue?) then (yes)
+      :Report issue form;
+      :Submit issue;
+      :Confirmation screen;
+    else (no)
+    endif
+  endif
+else (no)
+  :Show public homepage;
+  :Browse reported issues;
+  if (Want to report issue?) then (yes)
+    :Prompt login;
+    :Login/Register flow;
+    :Report issue form;
+    :Submit issue;
+    :Confirmation screen;
+  else (no)
+    :Continue browsing;
+  endif
+endif
+stop
+
+@enduml
